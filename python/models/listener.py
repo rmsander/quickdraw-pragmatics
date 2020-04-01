@@ -6,6 +6,7 @@ permutation invariance of the input sequences."""
 # External package imports
 import torch.nn as nn
 
+
 # TODO: Insert dimensions
 class ListeNet(nn.Module):
     """Neural network object representing our listener network.  This network
@@ -13,9 +14,10 @@ class ListeNet(nn.Module):
     components of the sketch uttered by the listener."""
 
     # Constructor method for class
-    def __init__(self, in_channels=5, K_conv=11, K_mp=5):
+    def __init__(self, in_channels=10, K_conv=5, K_mp=5, fc_neurons=500,
+                 num_classes=10):
         # Inherit from superclass
-        super(Listener, self).__init__()
+        super(ListeNet, self).__init__()
 
         # Define parameters of network
         self.in_channels = in_channels
@@ -27,11 +29,11 @@ class ListeNet(nn.Module):
         self.maxpool1 = nn.MaxPool1d(self.K_mp)
 
         # Multilayer Perceptron
-        self.fc1 = nn.Linear(INSERT, INSERT // 4)
-        self.fc2 = nn.Linear(INSERT // 4, INSERT // 16)
+        self.fc1 = nn.Linear(fc_neurons, fc_neurons // 4)
+        self.fc2 = nn.Linear(fc_neurons // 4, fc_neurons // 16)
 
         # Classification layer
-        self.SM = nn.Softmax(dim=INSERT // 16)
+        self.SM = nn.Softmax(dim=num_classes)
 
     # Forward method for mapping input to output
     def forward(self, x):
